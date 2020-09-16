@@ -1,9 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const categoryRouter = require('./category');
+const customerRouter = require('./customer');
+const driverRouter = require('./driver');
+const orderRouter = require('./order');
+const productRouter = require('./product');
+const storeOwnerRouter = require('./store-owner');
+const storeRouter = require('./store');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
-module.exports = router;
+module.exports = {
+  categoryRouter,
+  customerRouter,
+  driverRouter,
+  orderRouter,
+  productRouter,
+  storeOwnerRouter,
+  storeRouter
+}
