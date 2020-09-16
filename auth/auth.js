@@ -4,7 +4,7 @@ const JwtStrategy = require('passport-jwt').Strategy,
 ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
-const { customerService, driverService, storeOwnerService } = require('../services/index');
+const { customerService, driverService, storeOwnerService, adminService } = require('../services/index');
 
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -13,8 +13,12 @@ const options = {
 
 passport.use('customer', new JwtStrategy(options, async (payload, done) => {
     try {
+        if (payload.role !== "customer" ){
+            return done(null, false); 
+        }
+        console.log(payload);
         const customer = await customerService.findById(payload._id);
-        done(null, customer.id);
+        done(null, customer._id);
     } catch (err) {
         done(err, false);
     }
@@ -39,6 +43,22 @@ passport.use('storeOwner', new JwtStrategy(options, async (payload, done) => {
     }
     
 }));
+
+
+passport.use('admin', new JwtStrategy(options, async (payload, done) => {
+    try {
+        if (payload.role !== "admin" ){
+            return done(null, false); 
+        }
+
+        const admin = await adminService.findById(payload._id);
+        done(null, admin.id);
+    } catch (err) {
+        done(err, false);
+    }
+    
+}));
+
 
 
 module.exports = passport;

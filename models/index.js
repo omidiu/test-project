@@ -5,7 +5,7 @@ const Order = require('./order');
 const Product = require('./product');
 const Store = require('./store');
 const StoreOwner = require('./storeOwner');
-
+const Admin = require('./admin');
 
 module.exports = {
   Category,
@@ -14,5 +14,6 @@ module.exports = {
   Order,
   Product,
   Store,
-  StoreOwner
+  StoreOwner,
+  Admin
 }

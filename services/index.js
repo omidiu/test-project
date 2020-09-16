@@ -5,6 +5,7 @@ const orderService = require('./order');
 const productService = require('./product');
 const storeOwnerService = require('./store-owner');
 const storeService = require('./store');
+const adminService = require('./admin');
 
 
 
@@ -15,5 +16,6 @@ module.exports = {
   orderService,
   productService,
   storeOwnerService,
-  storeService
+  storeService,
+  adminService
 }

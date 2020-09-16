@@ -73,6 +73,37 @@ exports.login = async (username, password) => {
 
 
 /*********************************************************************************
+* Edit profile 
+**********************************************************************************/
+exports.editProfile = async ( name, username, customerId) => {
+  try {
+    
+
+    let user = await this.findByUsername(username)
+    if (user) {
+      // Check if username is not exist  ( not for him/her :( )
+      if (customerId.toString() !== user._id.toString())
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "There is an account with this username"
+      });
+    }
+
+    
+
+    await customerRepository.updateProfile(name, username, customerId);
+
+    return true;
+
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+
+/*********************************************************************************
 * Find by phone number
 **********************************************************************************/
 exports.findByPhoneNumber = async (phoneNumber) => {
@@ -101,3 +132,28 @@ exports.findById = async ( customerId ) => {
     throw err;
   }
 };
+
+
+
+/*********************************************************************************
+* Get profile
+**********************************************************************************/
+exports.getProfile = async (customerId) => {
+  try {
+    // Get customer
+    const customer = await this.findById(customerId);
+
+    // Cast to object
+    const customerObj = customer.toObject();
+
+    // Delete password & Shopping cart
+    delete customerObj.password;
+    delete customerObj.shoppingCart;
+    
+    return customerObj;
+
+  } catch (err) {
+    throw err;
+  }
+};
+

@@ -1,7 +1,7 @@
 const Ajv = require('ajv');
 const MyError = require('../../lib/error');
 const jwt = require('jsonwebtoken');
-const { customerSchemas } = require('../schemas/index');
+const { storeOwnerSchemas } = require('../schemas/index');
 
 
 
@@ -29,7 +29,7 @@ exports.isValidRegisterForm = (req, res, next) => {
   try {
 
     // Check valid or not
-    const {valid, validator} = validateSchema(req.body, customerSchemas.registration);
+    const {valid, validator} = validateSchema(req.body, storeOwnerSchemas.registration);
 
     if (!valid) {
       throw new MyError(400, "Bad request", new Error().stack, {
@@ -54,32 +54,7 @@ exports.isValidloginForm = (req, res, next) => {
   try {
 
     // Check valid or not
-    const {valid, validator} = validateSchema(req.body, customerSchemas.login);
-
-    if (!valid) {
-      throw new MyError(400, "Bad request", new Error().stack, {
-        error: validator.errors
-      });
-    }
-
-    // validation form is valid
-    next();
-
-  } catch (err) {
-    next(err);
-  } 
-    
-}
-
-/*********************************************************************************
-* Validate edit form
-**********************************************************************************/
-exports.isValidEditForm = (req, res, next) => {
-  
-  try {
-
-    // Check valid or not
-    const {valid, validator} = validateSchema(req.body, customerSchemas.editProfile);
+    const {valid, validator} = validateSchema(req.body, storeOwnerSchemas.login);
 
     if (!valid) {
       throw new MyError(400, "Bad request", new Error().stack, {

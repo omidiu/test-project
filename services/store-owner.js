@@ -99,3 +99,16 @@ exports.findById = async (storeOwnerId) => {
     throw err;
   }
 }
+
+/*********************************************************************************
+* Verify store owner
+**********************************************************************************/
+exports.verify = async (storeOwnerId) => {
+  try {
+
+    await storeOwnerRepository.verify(storeOwnerId);
+
+  } catch (err) {
+    throw err;
+  }
+}

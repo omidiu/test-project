@@ -32,18 +32,6 @@ const login = {
 }
 
 
-const editProfile = {
-  "title": "User",
-  "description": "Edit form validation for edit account",
-  "type": "object",
-  "properties": {
-    "name": { "type": "string", "maxLength": 50 },
-    "username": { "type": "string", "maxLength": 20 },
-  },
-  
-
-  "required": ["name", "username"]
-}
 
 
 
@@ -51,8 +39,7 @@ const editProfile = {
 
 module.exports = {
   registration,
-  login,
-  editProfile
+  login
 }
 
 

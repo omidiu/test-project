@@ -102,3 +102,15 @@ exports.findById = async ( driverid ) => {
     throw err;
   }
 };
+
+
+exports.verify = async (driverId) => {
+  try {
+
+    await driverRepository.verify(driverId);
+
+  } catch (err) {
+    throw err;
+  }
+}
+

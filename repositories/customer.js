@@ -18,6 +18,20 @@ exports.create = async (name, username, hashedPassword, phoneNumber) => {
 
 
 /*********************************************************************************
+* Create 
+**********************************************************************************/
+exports.updateProfile = async (name, username, customerId) => {
+  try {
+    
+    await Customer.findByIdAndUpdate({ _id: customerId }, {name, username});
+
+  } catch (err) {
+    throw err
+  }
+};
+
+
+/*********************************************************************************
 * Find by id
 **********************************************************************************/
 exports.findById = async ( customerId ) => {
@@ -40,6 +54,7 @@ exports.findByPhoneNumber = async ( phoneNumber ) => {
   }
   
 };
+
 
 /*********************************************************************************
 * Find by username

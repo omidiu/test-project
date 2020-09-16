@@ -22,7 +22,7 @@ try {
 }
 
 // Import routes
-const { categoryRouter, customerRouter, driverRouter, orderRouter, productRouter, storeOwnerRouter, storeRouter } = require('./routes/index');
+const { categoryRouter, customerRouter, driverRouter, orderRouter, productRouter, storeOwnerRouter, storeRouter, adminRouter } = require('./routes/index');
 
 const app = express();
 
@@ -36,11 +36,12 @@ app.use(cookieParser());
 
 app.use('/categories', categoryRouter);
 app.use('/customers', customerRouter);
-app.use('/driver', driverRouter);
-app.use('/order', orderRouter);
-app.use('/product', productRouter);
-app.use('/storeOwner', storeOwnerRouter);
-app.use('/store', storeRouter);
+app.use('/drivers', driverRouter);
+app.use('/orders', orderRouter);
+app.use('/products', productRouter);
+app.use('/storeOwners', storeOwnerRouter);
+app.use('/stores', storeRouter);
+app.use('/admins', adminRouter);
 
 
 // catch 404 and forward to error handler

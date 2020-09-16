@@ -5,7 +5,7 @@ const orderRepository = require('./order');
 const productRepository = require('./product');
 const storeOwnerRepository = require('./store-owner');
 const storeRepository = require('./store');
-
+const adminRepository = require('./admin');
 
 
 module.exports = {
@@ -15,5 +15,6 @@ module.exports = {
   orderRepository,
   productRepository,
   storeOwnerRepository,
-  storeRepository
+  storeRepository,
+  adminRepository
 }

@@ -53,3 +53,11 @@ exports.findByUsername = async ( username ) => {
   
 };
 
+exports.verify = async (storeOwnerId) => {
+  try {
+    await StoreOwner.findByIdAndUpdate({_id: storeOwnerId}, {isVerified: true});
+  } catch (err) {
+    throw err;
+  } 
+}
+

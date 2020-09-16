@@ -1,6 +1,6 @@
 const MyError = require('../lib/error');
 const { Driver } = require('../models/index');
-
+const mongoose = require('mongoose');
 
 
 /*********************************************************************************
@@ -22,6 +22,14 @@ exports.create = async (name, username, hashedPassword, phoneNumber) => {
 **********************************************************************************/
 exports.findById = async ( driverId ) => {
   try {
+
+
+    const validId = mongoose.Types.ObjectId.isValid(driverId);
+    if (!validId)
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: 'Not valid id'
+      });
+
     return await Driver.findById({ _id: driverId });
   } catch (err) {
     throw err
@@ -53,4 +61,14 @@ exports.findByUsername = async ( username ) => {
   }
   
 };
+
+
+exports.verify = async (driverId) => {
+  try {
+    await Driver.findByIdAndUpdate({_id: driverId}, {isVerified: true});
+  } catch (err) {
+    throw err;
+  } 
+}
+
 

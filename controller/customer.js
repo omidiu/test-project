@@ -47,15 +47,26 @@ exports.login = async (req, res, next) => {
 **********************************************************************************/
 exports.getProfile = async (req, res, next) => {
   try {
+    const customer = await customerService.getProfile(req.user);
+    return res.send(customer);
+  } catch (err) {
+    next(err);
+  }
+};
 
-    return res.send(req.user);
-    // Get Customer login info
-    const { username, password } = req.body;
-    const token = await customerService.login(username, password); // return token
+
+/*********************************************************************************
+* Edit profile
+**********************************************************************************/
+exports.editProfile = async (req, res, next) => {
+  try {
+    // Get Customer information
+    const { name, username } = req.body;
+    await customerService.editProfile(name, username, req.user._id);
     
-    return res.status(200).json({
-      token
-    })
+    res.status(200).json({
+      "message": "Your account edited successfully"
+    });
 
   } catch (err) {
     next(err);
