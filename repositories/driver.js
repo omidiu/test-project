@@ -24,8 +24,8 @@ exports.findById = async ( driverId ) => {
   try {
 
 
-    const validId = mongoose.Types.ObjectId.isValid(driverId);
-    if (!validId)
+    const isValidId = mongoose.Types.ObjectId.isValid(driverId);
+    if (!isValidId)
       throw new MyError(400, "Bad request", new Error().stack, {
         message: 'Not valid id'
       });

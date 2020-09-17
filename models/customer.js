@@ -34,7 +34,7 @@ const customer = new Schema({
 
   shoppingCart: [
     { 
-      product: {
+      productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'products',
         require: true

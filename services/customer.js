@@ -5,6 +5,8 @@ const saltRounds = 10;
 const MyError = require('../lib/error');
 const { customerRepository } = require('../repositories/index');
 
+const productService = require('./product');
+
 /*********************************************************************************
 * Create 
 **********************************************************************************/
@@ -156,4 +158,64 @@ exports.getProfile = async (customerId) => {
     throw err;
   }
 };
+
+/*********************************************************************************
+* Get shopping cart
+**********************************************************************************/
+exports.getShoppingCart = async (customerId) => {
+  try {
+    // Get customer
+    const customer = await this.findById(customerId);
+
+    // Cast to object
+    const customerObj = customer.toObject();
+
+
+    return customerObj.shoppingCart;
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+/*********************************************************************************
+* Add item to shopping cart (Shopping cart is array of items)
+**********************************************************************************/
+exports.addItemToShoppingCart = async (productId, quantity, customerId) => {
+  try {
+    // Get 
+    const product = await productService.findById(productId);
+    if (!product) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Product not found"
+      });
+    }
+    
+    // Check quantity of product
+    if (quantity > product.quantity) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not enough Products"
+      });
+    }
+    
+    // Get shopping cart
+    const shoppingCart = await this.getShoppingCart(customerId);
+
+    // Check shopping cart contains that product (It should be delete)
+    for (let item = 0; item < shoppingCart.length; item++) {
+      if ( JSON.stringify( shoppingCart[item].productId ) === JSON.stringify(productId) ){
+        await customerRepository.deleteItemFromShoppingCart(shoppingCart[item]._id, customerId);
+      }
+    }
+    
+    await customerRepository.pushItemToShoppingCart(productId, quantity, customerId);
+    
+    
+  } catch (err) {
+    throw err;
+  }
+};
+
+
 

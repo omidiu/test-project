@@ -12,7 +12,7 @@ const registration = {
   },
   
 
-  "required": ["name", "phoneNumber", "password"]
+  "required": ["name", "phoneNumber", "password", "username"]
 }
 
 
@@ -45,6 +45,18 @@ const editProfile = {
   "required": ["name", "username"]
 }
 
+const item  = {
+  "title": "item",
+  "description": "Shopping cart contains array of items",
+  "type": "object",
+  "properties": {
+    "productId": { "type": "string", "maxLength": 50 },
+    "quantity": { "type": "integer", "minimum": 1 }
+  },
+  
+
+  "required": ["productId", "quantity"]
+}
 
 
 
@@ -52,7 +64,8 @@ const editProfile = {
 module.exports = {
   registration,
   login,
-  editProfile
+  editProfile,
+  item
 }
 
 

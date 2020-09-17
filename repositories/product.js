@@ -1,6 +1,6 @@
 const MyError = require('../lib/error');
 const { Product } = require('../models/index');
-
+const mongoose = require('mongoose');
 
 
 /*********************************************************************************
@@ -23,7 +23,11 @@ exports.create = async (name, price, quantity, storeId) => {
 **********************************************************************************/
 exports.findById = async (productId) => {
   try {
-    
+    const isValidId = mongoose.Types.ObjectId.isValid(productId);
+    if (!isValidId)
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: 'Not valid id'
+      });
     return await Product.findById(productId);
 
   } catch (err) {

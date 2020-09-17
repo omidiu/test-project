@@ -72,3 +72,24 @@ exports.editProfile = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
+/*********************************************************************************
+* Add item to shopping cart (Shoppin cart is array of items)
+**********************************************************************************/
+exports.addItemToShoppingCart = async (req, res, next) => {
+  try {
+    // Get item information
+    const { productId, quantity } = req.body;
+    const customerId = req.user;
+    await customerService.addItemToShoppingCart(productId, quantity, customerId);
+    
+    res.status(200).json({
+      "message": "Product added to your shopping cart successfully"
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
