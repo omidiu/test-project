@@ -116,6 +116,25 @@ exports.editItemOfShoppingCart = async (req, res, next) => {
 };
 
 
+/*********************************************************************************
+* Delete item of shopping cart
+**********************************************************************************/
+exports.deleteItemOfShoppingCart = async (req, res, next) => {
+  try {
+    const customerId = req.user;
+    const itemId = req.params.itemId;
+    await customerService.deleteItemOfShoppingCart(itemId, customerId);
+    
+    res.status(200).json({
+      "message": "Product removed successfully from your shopping cart"
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 
 /*********************************************************************************
 * Get shopping cart

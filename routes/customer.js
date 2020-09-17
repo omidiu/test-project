@@ -31,9 +31,16 @@ router.get('/shopping-carts', passport.authenticate('customer', {session: false}
 customerController.getShoppingCart);
 
 
-// Edit shopping cart
+// Edit shopping cart item
 router.put('/shopping-carts/:itemId', passport.authenticate('customer', {session: false}), 
 customerValidator.isValidEditItem, customerController.editItemOfShoppingCart);
+
+
+
+// Delete shopping cart item
+router.delete('/shopping-carts/:itemId', passport.authenticate('customer', {session: false}), 
+customerController.deleteItemOfShoppingCart);
+
 
 
 

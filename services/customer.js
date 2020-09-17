@@ -271,3 +271,37 @@ exports.editItemOfShoppingCart = async (quantity, itemId, customerId) => {
 };
 
 
+/*********************************************************************************
+* Delete item of shopping cart
+**********************************************************************************/
+exports.deleteItemOfShoppingCart = async (itemId, customerId) => {
+  try {
+    // Get customer
+    const customer = await this.findById(customerId);
+
+    let isItemAvailable = false;
+
+    // Search for item for delete
+    for (let index = 0; index < customer.shoppingCart.length; index++) {
+      if ( JSON.stringify( customer.shoppingCart[index]._id ) === JSON.stringify(itemId) ){
+        customer.shoppingCart.splice(index, 1);
+        isItemAvailable = true;
+      }
+    }
+  
+    // Means no item
+    if (!isItemAvailable) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not found"
+      });
+    }
+    
+    // save changes to database
+    await customerRepository.save(customer);
+    
+    
+  } catch (err) {
+    throw err;
+  }
+};
+
