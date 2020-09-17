@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const MyError = require('../lib/error');
 const { adminRepository } = require('../repositories/index');
 
-// const { driverService } = require('./index');
 const driverService = require('./driver');
 const storeOwnerService = require('./store-owner');
 

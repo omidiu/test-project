@@ -20,14 +20,10 @@ const product = new Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'categories',
-    required: true
+    // required: true
   },
 
-  createdAt: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
+  
 
   price: {
     type: Number,
@@ -37,8 +33,13 @@ const product = new Schema({
   quantity: {
     type: Number, 
     min: 0
-  }
+  },
 
+  createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now
+  }
 
 });
 

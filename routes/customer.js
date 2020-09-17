@@ -21,4 +21,7 @@ router.get('/profile', passport.authenticate('customer', {session: false}), cust
 router.put('/profile', passport.authenticate('customer', {session: false}), customerValidator.isValidEditForm, customerController.editProfile);
 
 
+
+
+
 module.exports = router;

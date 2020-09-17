@@ -32,14 +32,45 @@ const login = {
 }
 
 
+const store = {
+  "title": "store",
+  "description": "create store form validation",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "maxLength": 50 },
+    "address": { "type": "string", "maxLength": 100 },
+    "lat": { "type": "integer", "minimum": -90,  "maximum": 90},
+    "long": { "type": "integer", "minimum": -180, "maximum": 180 }
+  },
+  
 
+  "required": ["name", "address", "lat", "long"]
+}
+
+
+
+const product = {
+  "title": "product",
+  "description": "Product information",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "maxLength": 50 },
+    "price": { "type": "integer", "minimum": 0},
+    "quantity": { "type": "integer", "minimum": 0 }
+  },
+  
+
+  "required": ["name", "price", "quantity"]
+}
 
 
 
 
 module.exports = {
   registration,
-  login
+  login,
+  store,
+  product
 }
 
 

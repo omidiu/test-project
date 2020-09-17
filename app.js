@@ -39,7 +39,7 @@ app.use('/customers', customerRouter);
 app.use('/drivers', driverRouter);
 app.use('/orders', orderRouter);
 app.use('/products', productRouter);
-app.use('/storeOwners', storeOwnerRouter);
+app.use('/store-owners', storeOwnerRouter);
 app.use('/stores', storeRouter);
 app.use('/admins', adminRouter);
 

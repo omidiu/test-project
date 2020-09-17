@@ -36,8 +36,15 @@ passport.use('driver', new JwtStrategy(options, async (payload, done) => {
 
 passport.use('storeOwner', new JwtStrategy(options, async (payload, done) => {
     try {
+        if (payload.role !== "storeOwner" ){
+            return done(null, false); 
+        }
+
         const storeOwner = await storeOwnerService.findById(payload._id);
-        done(null, storeOwner.id);
+        if(!storeOwner)
+            return done(null, false); 
+        
+        done(null, storeOwner._id);
     } catch (err) {
         done(err, false);
     }

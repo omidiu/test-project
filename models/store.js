@@ -22,13 +22,15 @@ const store = new Schema({
   lat: {
     type: Number,
     min: -90, 
-    max: 90
+    max: 90,
+    required: true
   },
 
   long: {
     type: Number,
     min: -180,
-    max: 180
+    max: 180,
+    required: true
   },
 
   ownerId: {
@@ -37,28 +39,21 @@ const store = new Schema({
     required: true
   },
 
-  category: {
+  categoryId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'categories',
-    required: true
+    // required: true 
   },
 
   createdAt: {
     type: Date,
     required: true,
     default: Date.now
-  },
-
-  price: {
-    type: Number,
-    min: 0 // which mean free :-| 
-  },
-
-  quantity: {
-    type: Number, 
-    min: 0
   }
 
+  
+
+  
 
 });
 

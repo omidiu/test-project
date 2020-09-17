@@ -5,6 +5,10 @@ const saltRounds = 10;
 const MyError = require('../lib/error');
 const { storeOwnerRepository } = require('../repositories/index');
 
+// const { storeService } = require('./index');
+const storeService = require('./store');
+const productService = require('./product')
+
 /*********************************************************************************
 * Create 
 **********************************************************************************/
@@ -36,6 +40,9 @@ exports.register = async ( name, username, password, phoneNumber ) => {
     throw err;
   }
 };
+
+
+
 
 
 /*********************************************************************************
@@ -112,3 +119,102 @@ exports.verify = async (storeOwnerId) => {
     throw err;
   }
 }
+
+
+/*********************************************************************************
+* Create store 
+**********************************************************************************/
+exports.createStore = async ( name, address, lat, long, ownerId ) => {
+  try {
+    
+    if (await storeService.findByOwner(ownerId) ) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "You already have a store"
+      });
+    }
+
+    const createdStore = await storeService.create(name, address, lat, long, ownerId)
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+/*********************************************************************************
+* Create product 
+**********************************************************************************/
+exports.createProduct = async ( name, price, quantity, ownerId ) => {
+  try {
+    
+    const store = await storeService.findByOwner(ownerId)
+    if (!store) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "Please create a store first"
+      });
+    }
+    
+    const storeId = store._id;
+
+    const createdProduct = await productService.create(name, price, quantity, storeId);
+    return createdProduct;
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+/*********************************************************************************
+* Get one product of store
+**********************************************************************************/
+exports.getProductOfStore = async ( ownerId, productId) => {
+  try {
+    
+    const store = await storeService.findByOwner(ownerId)
+    if (!store) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "You don't have any store yet"
+      });
+    }
+    // Get store id of store owner
+    const storeId = store._id;
+
+    // Find product
+    const product = await productService.findById(productId);
+
+    if (product.storeId.toString() !== storeId.toString()){
+      return {}
+    }
+
+    return product;
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+
+/*********************************************************************************
+* Get all products 
+**********************************************************************************/
+exports.getAllProductsOfStore = async ( ownerId ) => {
+  try {
+    
+    const store = await storeService.findByOwner(ownerId)
+    if (!store) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "You don't have any store yet"
+      });
+    }
+
+    const storeId = store._id;
+
+    const products = await productService.GetAllProductOfStore(storeId);
+    return products;
+  } catch (err) {
+    throw err;
+  }
+};

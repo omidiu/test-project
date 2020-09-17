@@ -70,3 +70,56 @@ exports.isValidloginForm = (req, res, next) => {
   } 
     
 }
+
+
+/*********************************************************************************
+* Validate store information
+**********************************************************************************/
+exports.isValidStoreInformation = (req, res, next) => {
+  
+  try {
+
+    // Check valid or not
+    const {valid, validator} = validateSchema(req.body, storeOwnerSchemas.store);
+
+    if (!valid) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        error: validator.errors
+      });
+    }
+
+    // validation form is valid
+    next();
+
+  } catch (err) {
+    next(err);
+  } 
+    
+}
+
+
+
+/*********************************************************************************
+* Validate product information
+**********************************************************************************/
+exports.isValidProductInformation = (req, res, next) => {
+  
+  try {
+
+    // Check valid or not
+    const {valid, validator} = validateSchema(req.body, storeOwnerSchemas.product);
+
+    if (!valid) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        error: validator.errors
+      });
+    }
+
+    // validation form is valid
+    next();
+
+  } catch (err) {
+    next(err);
+  } 
+    
+}
