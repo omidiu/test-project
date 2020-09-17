@@ -217,5 +217,57 @@ exports.addItemToShoppingCart = async (productId, quantity, customerId) => {
   }
 };
 
+/*********************************************************************************
+* Edit item of shopping cart
+**********************************************************************************/
+exports.editItemOfShoppingCart = async (quantity, itemId, customerId) => {
+  try {
+    // Get customer
+    const customer = await this.findById(customerId);
+
+    // Find product id of item
+    let productId;
+    let indexOfItem;
+    for (let index = 0; index < customer.shoppingCart.length; index++) {
+      if ( JSON.stringify( customer.shoppingCart[index]._id ) === JSON.stringify(itemId) ){
+        productId = customer.shoppingCart[index].productId;
+        indexOfItem = index;
+      }
+    }
+  
+    // Means no item no product id
+    if (!productId) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not found"
+      });
+    }
+
+
+    // Find product
+    const product = await productService.findById(productId);
+    
+
+    // Check quantity of product
+    if (quantity > product.quantity) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not enough Products"
+      });
+    }
+
+
+    // Edit item
+    customer.shoppingCart[indexOfItem].quantity  = quantity;
+
+    // save customer
+    await customerRepository.save(customer);
+
+    return 2;
+    
+    
+    
+  } catch (err) {
+    throw err;
+  }
+};
 
 

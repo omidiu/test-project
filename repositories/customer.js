@@ -73,6 +73,16 @@ exports.findByUsername = async ( username ) => {
   
 };
 
+/*********************************************************************************
+* Save customer
+**********************************************************************************/
+exports.save = async (customer) => {
+  try {
+    await customer.save();
+  } catch (err) {
+    throw err;
+  }
+}
 
 /*********************************************************************************
 * Push Item to shopping cart
@@ -90,6 +100,7 @@ exports.pushItemToShoppingCart = async ( productId, quantity, customerId ) => {
   }
   
 };
+
 
 
 

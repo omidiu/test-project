@@ -47,7 +47,7 @@ const editProfile = {
 
 const item  = {
   "title": "item",
-  "description": "Shopping cart contains array of items",
+  "description": "For creating item",
   "type": "object",
   "properties": {
     "productId": { "type": "string", "maxLength": 50 },
@@ -59,13 +59,27 @@ const item  = {
 }
 
 
+const editItem  = {
+  "title": "item",
+  "description": "For edit item",
+  "type": "object",
+  "properties": {
+    "quantity": { "type": "integer", "minimum": 1 }
+  },
+  
+
+  "required": ["quantity"]
+}
+
+
 
 
 module.exports = {
   registration,
   login,
   editProfile,
-  item
+  item,
+  editItem
 }
 
 

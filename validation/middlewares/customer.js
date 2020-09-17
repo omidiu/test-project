@@ -97,7 +97,7 @@ exports.isValidEditForm = (req, res, next) => {
 }
 
 /*********************************************************************************
-* Validate Item (Shopping cart contains of item)
+* Validate Item (for creating)
 **********************************************************************************/
 exports.isValidItem = (req, res, next) => {
   
@@ -105,6 +105,32 @@ exports.isValidItem = (req, res, next) => {
 
     // Check valid or not
     const {valid, validator} = validateSchema(req.body, customerSchemas.item);
+
+    if (!valid) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        error: validator.errors
+      });
+    }
+
+    // validation form is valid
+    next();
+
+  } catch (err) {
+    next(err);
+  } 
+    
+}
+
+
+/*********************************************************************************
+* Validate Item (for editing)
+**********************************************************************************/
+exports.isValidEditItem = (req, res, next) => {
+  
+  try {
+
+    // Check valid or not
+    const {valid, validator} = validateSchema(req.body, customerSchemas.editItem);
 
     if (!valid) {
       throw new MyError(400, "Bad request", new Error().stack, {

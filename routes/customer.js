@@ -21,13 +21,21 @@ router.get('/profile', passport.authenticate('customer', {session: false}), cust
 router.put('/profile', passport.authenticate('customer', {session: false}), customerValidator.isValidEditForm, customerController.editProfile);
 
 
-// login customer
+// Add item to shopping cart
 router.post('/shopping-carts', passport.authenticate('customer', {session: false}), 
 customerValidator.isValidItem, customerController.addItemToShoppingCart);
 
 
-// login customer
+// Get shopping cart items
 router.get('/shopping-carts', passport.authenticate('customer', {session: false}), 
 customerController.getShoppingCart);
+
+
+// Edit shopping cart
+router.put('/shopping-carts/:itemId', passport.authenticate('customer', {session: false}), 
+customerValidator.isValidEditItem, customerController.editItemOfShoppingCart);
+
+
+
 
 module.exports = router;

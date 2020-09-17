@@ -94,6 +94,28 @@ exports.addItemToShoppingCart = async (req, res, next) => {
   }
 };
 
+/*********************************************************************************
+* Edit item of shopping cart
+**********************************************************************************/
+exports.editItemOfShoppingCart = async (req, res, next) => {
+  try {
+    // Get item information
+    const { quantity } = req.body;
+    const customerId = req.user;
+    const itemId = req.params.itemId;
+
+    await customerService.editItemOfShoppingCart(quantity, itemId, customerId);
+    
+    res.status(200).json({
+      "message": "Product edited successfully"
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 
 /*********************************************************************************
 * Get shopping cart
@@ -113,3 +135,6 @@ exports.getShoppingCart = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
