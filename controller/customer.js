@@ -93,3 +93,23 @@ exports.addItemToShoppingCart = async (req, res, next) => {
     next(err);
   }
 };
+
+
+/*********************************************************************************
+* Get shopping cart
+**********************************************************************************/
+exports.getShoppingCart = async (req, res, next) => {
+  try {
+    // Get item information
+    const customerId = req.user;
+    const shoppingCart = await customerService.getShoppingCart(customerId);
+    
+    res.status(200).json({
+      "message": "Product added to your shopping cart successfully",
+      shoppingCart
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

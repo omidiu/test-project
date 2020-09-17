@@ -26,4 +26,8 @@ router.post('/shopping-carts', passport.authenticate('customer', {session: false
 customerValidator.isValidItem, customerController.addItemToShoppingCart);
 
 
+// login customer
+router.get('/shopping-carts', passport.authenticate('customer', {session: false}), 
+customerController.getShoppingCart);
+
 module.exports = router;
