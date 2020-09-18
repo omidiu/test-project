@@ -1,11 +1,14 @@
 require('dotenv').config();
+const { timeUtil } = require('../utils/index');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
+const randomString = require('randomstring');
 const { customerRepository } = require('../repositories/index');
 
 const productService = require('./product');
+const orderService = require('./order');
 
 /*********************************************************************************
 * Create 
@@ -305,3 +308,110 @@ exports.deleteItemOfShoppingCart = async (itemId, customerId) => {
   }
 };
 
+
+/*********************************************************************************
+* Purchase
+**********************************************************************************/
+exports.purchase = async (address, location, estimatedDelivery, deliveryNotes, customerId) => {
+  try {
+    // Get customer
+    const customer = await this.findById(customerId);
+
+    // Get products ids
+    const productsIds = customer.shoppingCart.map(item => { return item.productId });
+
+    // Get products ids
+    const products = await productService.findByIds(productsIds); 
+    
+    
+    
+
+    const UnAvailableProducts = [];
+
+    // Check shopping cart is not empty
+    if (customer.shoppingCart.length === 0) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "Your shopping cart is empty"
+      });
+    }
+
+    // Check which products it's not available
+    for (let index = 0; index < customer.shoppingCart.length; index++) {
+      if (customer.shoppingCart[index].quantity > products[index].quantity) {
+        UnAvailableProducts.push({
+          productId: products[index]._id,
+          available: products[index].quantity,
+          yourOrder: customer.shoppingCart[index].quantity
+        });
+      }
+    }
+
+    // Check UnAvailable products
+    if (UnAvailableProducts.length > 0) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "Can't purchase",
+        UnAvailableProducts 
+      })
+    }
+
+    // Decrease quantity of products
+    for (let index = 0; index < products.length; index++) {
+      await productService.decreaseQuantityOfProduct(-customer.shoppingCart[index].quantity, customer.shoppingCart[index].productId);
+    }
+
+
+
+    // Find stores of products 
+    const storesIdsDup = products.map(product => { return product.storeId });
+
+
+    // Remove duplicate store id
+    const storesIds = storesIdsDup.splice(0, storesIdsDup.length, ...(new Set(storesIdsDup)));
+
+    // Create status
+    const status = storesIds.map( store => {
+      return {
+        storeId: store,
+        isItReady: false
+      }
+    });
+
+    // TODO:
+    const payment = {
+      method: "Visa",
+      transactionId: randomString.generate({ length: 12, charset: 'hex' }),
+      trackingCode: randomString.generate({ length: 12, charset: 'hex' })
+    }
+    
+    // convert strings to js date obj
+    const date = timeUtil.convertDateStringToDateObj(estimatedDelivery);
+
+    const shipping = {
+      address, 
+      location, 
+      estimatedDelivery: date, 
+      deliveryNotes
+    }
+    
+    const productsForOrder = customer.shoppingCart.map(item => {
+      return {
+        productId: item.productId,
+        quantity: item.quantity
+      }
+    })
+    
+    await orderService.create( productsForOrder, shipping, status, payment, customerId );
+    
+
+    
+    return 3;
+    // should make shopping cart empty 
+    customer.shoppingCart = [];
+    await customerRepository.save(customer);
+    
+    
+    
+  } catch (err) {
+    throw err;
+  }
+};

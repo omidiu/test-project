@@ -1,4 +1,4 @@
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { StoreOwner } = require('../models/index');
 
 

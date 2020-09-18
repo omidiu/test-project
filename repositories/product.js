@@ -1,4 +1,4 @@
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { Product } = require('../models/index');
 const mongoose = require('mongoose');
 
@@ -35,13 +35,46 @@ exports.findById = async (productId) => {
   }
 };
 
+
+/*********************************************************************************
+* Get products by ids
+**********************************************************************************/
+exports.findByIds = async (productsIds) => {
+  try {
+    for (let index = 0; index < productsIds.length; index++) {
+      
+    if (!mongoose.Types.ObjectId.isValid(productsIds[index]))
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: 'Not valid id'
+      });
+    }
+    
+    return await Product.find(
+      {
+       '_id': 
+       { 
+         $in: productsIds
+       }
+      }
+    );
+
+  } catch (err) {
+    throw err
+  }
+};
+
+
 /*********************************************************************************
 * Get all products of store
 **********************************************************************************/
-exports.GetAllProductOfStore = async (storeId) => {
+exports.decreaseQuantityOfProduct = async (minus, productId) => {
   try {
     
-    return await Product.find({ storeId });
+
+    await Product.update(
+      { _id: productId },
+      { $inc: { quantity: minus } }
+    )
 
   } catch (err) {
     throw err

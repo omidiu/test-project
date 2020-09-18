@@ -1,5 +1,5 @@
 const Ajv = require('ajv');
-const MyError = require('../../lib/error');
+const MyError = require('../../utils/error');
 const jwt = require('jsonwebtoken');
 const { generalSchemas } = require('../schemas/index');
 

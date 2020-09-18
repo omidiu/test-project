@@ -1,4 +1,4 @@
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { productRepository } = require('../repositories/index');
 
 
@@ -26,6 +26,36 @@ exports.findById = async ( productId ) => {
   try {
     
     return await productRepository.findById(productId);
+    
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+/*********************************************************************************
+* Find by ids
+**********************************************************************************/
+exports.findByIds = async ( productIds ) => {
+  try {
+    
+    return await productRepository.findByIds(productIds);
+    
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+
+/*********************************************************************************
+* Decrease quantity
+**********************************************************************************/
+exports.decreaseQuantityOfProduct = async ( minus, productId ) => {
+  try {
+    
+    await productRepository.decreaseQuantityOfProduct(minus, productId);
     
   } catch (err) {
     throw err;

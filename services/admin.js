@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { adminRepository } = require('../repositories/index');
 
 const driverService = require('./driver');

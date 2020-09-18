@@ -1,4 +1,4 @@
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { storeRepository } = require('../repositories/index');
 
 

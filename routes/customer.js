@@ -42,6 +42,10 @@ router.delete('/shopping-carts/:itemId', passport.authenticate('customer', {sess
 customerController.deleteItemOfShoppingCart);
 
 
+// Purchase shopping cart
+router.post('/purchase', passport.authenticate('customer', {session: false}),
+customerValidator.isValidOrderShipping, 
+customerController.purchase);
 
 
 

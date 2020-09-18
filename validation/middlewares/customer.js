@@ -1,7 +1,8 @@
 const Ajv = require('ajv');
-const MyError = require('../../lib/error');
+const MyError = require('../../utils/error');
 const jwt = require('jsonwebtoken');
 const { customerSchemas } = require('../schemas/index');
+
 
 
 
@@ -131,6 +132,32 @@ exports.isValidEditItem = (req, res, next) => {
 
     // Check valid or not
     const {valid, validator} = validateSchema(req.body, customerSchemas.editItem);
+
+    if (!valid) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        error: validator.errors
+      });
+    }
+
+    // validation form is valid
+    next();
+
+  } catch (err) {
+    next(err);
+  } 
+    
+}
+
+
+/*********************************************************************************
+* Validate Item (for editing)
+**********************************************************************************/
+exports.isValidOrderShipping = (req, res, next) => {
+  
+  try {
+
+    // Check valid or not
+    const {valid, validator} = validateSchema(req.body, customerSchemas.orderShipping);
 
     if (!valid) {
       throw new MyError(400, "Bad request", new Error().stack, {

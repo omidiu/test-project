@@ -146,7 +146,6 @@ exports.getShoppingCart = async (req, res, next) => {
     const shoppingCart = await customerService.getShoppingCart(customerId);
     
     res.status(200).json({
-      "message": "Product added to your shopping cart successfully",
       shoppingCart
     });
 
@@ -156,4 +155,24 @@ exports.getShoppingCart = async (req, res, next) => {
 };
 
 
+
+/*********************************************************************************
+* Purchase
+**********************************************************************************/
+exports.purchase = async (req, res, next) => {
+  try {
+    // Get order shipping information
+    const { address, location, estimatedDelivery, deliveryNotes } = req.body;
+    
+    const customerId = req.user;
+    await customerService.purchase(address, location, estimatedDelivery, deliveryNotes, customerId);
+    
+    res.status(200).json({
+      "message": "Purchase completed successfully",
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
 

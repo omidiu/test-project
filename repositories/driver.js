@@ -1,4 +1,4 @@
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { Driver } = require('../models/index');
 const mongoose = require('mongoose');
 

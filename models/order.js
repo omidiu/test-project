@@ -6,10 +6,10 @@ const order = new Schema({
   
   products: [
     { 
-      product: {
+      productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'products',
-        require: true
+        required: true
       },
       
       quantity: {
@@ -19,7 +19,9 @@ const order = new Schema({
           validator : Number.isInteger,
           message   : '{VALUE} is not an integer value'
         }
-      } 
+      }
+      
+      
     }
   ],
 
@@ -96,16 +98,16 @@ const order = new Schema({
     driverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'drivers',
-      require: true
+      required: false
     },
     acceptedDate: {
       type: Date,
-      required: true
+      required: false
     },
     status: {
       type: String,
       enum: ['accepted', 'onWay', 'done', 'reject'],
-      default: "accepted"
+      required: false
     }
   },
 

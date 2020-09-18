@@ -1,3 +1,5 @@
+
+
 const registration = {
   "title": "User",
   "description": "Registration form validation for creating account",
@@ -72,6 +74,27 @@ const editItem  = {
 }
 
 
+const orderShipping  = {
+  "title": "Order shipping",
+  "description": "Order shipping which contains shipping information",
+  "type": "object",
+  "properties": {
+    "address": { "type": "string", "maxLength":  100 },
+    "location": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "integer", "minimum": -90,  "maximum": 90},
+        "long": { "type": "integer", "minimum": -180, "maximum": 180 },
+      },
+      "required": ["lat", "long"]
+    },
+    "deliveryNotes": { "type": "string", "maxLength": 100 },
+    // Date pattern accept something like this -> 2019-01-23 00:00:00
+    "estimatedDelivery": { "type": "string", "pattern": "^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9]) (2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?$" }
+  },  
+
+  "required": ["address", "location", "estimatedDelivery"]
+}
 
 
 module.exports = {
@@ -79,7 +102,8 @@ module.exports = {
   login,
   editProfile,
   item,
-  editItem
+  editItem, 
+  orderShipping
 }
 
 

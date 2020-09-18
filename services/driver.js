@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const MyError = require('../lib/error');
+const MyError = require('../utils/error');
 const { driverRepository } = require('../repositories/index');
 
 /*********************************************************************************
