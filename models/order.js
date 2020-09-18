@@ -31,7 +31,7 @@ const order = new Schema({
     required: true
   },
 
-  status: [
+  stores: [
     {
       store: {
         type: mongoose.Schema.Types.ObjectId,
