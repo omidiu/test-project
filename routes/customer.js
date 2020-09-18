@@ -48,6 +48,12 @@ customerValidator.isValidOrderShipping,
 customerController.purchase);
 
 
+
+// Get all orders of customer
+router.get('/orders', passport.authenticate('customer', {session: false}), 
+customerController.getAllOrders);
+
+
 // Get order of customer
 router.get('/orders/:orderId', passport.authenticate('customer', {session: false}), 
 customerController.getOrder);

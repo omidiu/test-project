@@ -36,3 +36,21 @@ exports.findOrderOfCustomer = async ( orderId, customerId ) => {
     throw err
   }
 };
+
+
+
+/*********************************************************************************
+* Find all orders of customer 
+**********************************************************************************/
+exports.findAllOrdersOfCustomer = async ( customerId ) => {
+  try {
+
+    
+    return await Order.find({ customerId });
+    
+
+  } catch (err) {
+    throw err
+  }
+};
+

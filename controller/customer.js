@@ -182,7 +182,7 @@ exports.purchase = async (req, res, next) => {
 
 
 /*********************************************************************************
-* Get order
+* Get order of customer
 **********************************************************************************/
 exports.getOrder = async (req, res, next) => {
   try {
@@ -198,3 +198,22 @@ exports.getOrder = async (req, res, next) => {
     next(err);
   }
 };
+
+
+/*********************************************************************************
+* Get all orders of customer
+**********************************************************************************/
+exports.getAllOrders = async (req, res, next) => {
+  try {
+    const customerId = req.user;
+    
+    const orders = await orderService.findAllOrdersOfCustomer(customerId);
+    
+    res.status(200).json({
+      orders
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+

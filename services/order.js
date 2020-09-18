@@ -34,4 +34,20 @@ exports.findOrderOfCustomer = async ( orderId, customerId ) => {
 
 
 
+/*********************************************************************************
+* Find all orders of customer
+**********************************************************************************/
+exports.findAllOrdersOfCustomer = async ( customerId ) => {
+  try {
+    
+    const orders = await orderRepository.findAllOrdersOfCustomer( customerId );
+    return orders;
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
 
