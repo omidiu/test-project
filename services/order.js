@@ -18,4 +18,20 @@ exports.create = async ( products, shipping, status, payment, customerId ) => {
 };
 
 
+/*********************************************************************************
+* Find order of Customer
+**********************************************************************************/
+exports.findOrderOfCustomer = async ( orderId, customerId ) => {
+  try {
+    
+    const order = await orderRepository.findOrderOfCustomer( orderId, customerId );
+    return order;
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
 

@@ -1,4 +1,4 @@
-const { customerService } = require('../services/index');
+const { customerService, orderService } = require('../services/index');
 
 
 
@@ -48,7 +48,11 @@ exports.login = async (req, res, next) => {
 exports.getProfile = async (req, res, next) => {
   try {
     const customer = await customerService.getProfile(req.user);
-    return res.send(customer);
+    
+    res.status(200).json({
+      customer
+    });
+
   } catch (err) {
     next(err);
   }
@@ -176,3 +180,21 @@ exports.purchase = async (req, res, next) => {
   }
 };
 
+
+/*********************************************************************************
+* Get order
+**********************************************************************************/
+exports.getOrder = async (req, res, next) => {
+  try {
+    const customerId = req.user;
+    const orderId = req.params.orderId;
+    
+    const order = await orderService.findOrderOfCustomer(orderId, customerId);
+    
+    res.status(200).json({
+      order
+    });
+  } catch (err) {
+    next(err);
+  }
+};

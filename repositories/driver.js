@@ -25,10 +25,12 @@ exports.findById = async ( driverId ) => {
 
 
     const isValidId = mongoose.Types.ObjectId.isValid(driverId);
-    if (!isValidId)
+    if (!isValidId) {
       throw new MyError(400, "Bad request", new Error().stack, {
         message: 'Not valid id'
       });
+    }
+      
 
     return await Driver.findById({ _id: driverId });
   } catch (err) {

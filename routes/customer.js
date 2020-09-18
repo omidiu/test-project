@@ -48,5 +48,9 @@ customerValidator.isValidOrderShipping,
 customerController.purchase);
 
 
+// Get order of customer
+router.get('/orders/:orderId', passport.authenticate('customer', {session: false}), 
+customerController.getOrder);
+
 
 module.exports = router;
