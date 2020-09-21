@@ -56,6 +56,14 @@ passport.authenticate('storeOwner', {session: false}),
 storeOwnerController.getOrder);
 
 
+// Edit one order of customer
+router.put('/orders/:orderId', 
+passport.authenticate('storeOwner', {session: false}), 
+storeOwnerController.markOrderReadyFromStore);
+
+
+
+
 // test
 router.get('/secure', 
 passport.authenticate('storeOwner', {session: false}), (req, res) => {

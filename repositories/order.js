@@ -20,6 +20,20 @@ exports.create = async ( products, shipping, stores, payment, customerId ) => {
 
 
 /*********************************************************************************
+* Find by id 
+**********************************************************************************/
+exports.findById = async (orderId) => {
+  try {
+
+    return await Order.findById(orderId);
+
+  } catch(err) {
+    throw err;
+  }
+}
+
+
+/*********************************************************************************
 * Find order by id It's just change structure of order data for service 
 **********************************************************************************/
 exports.findOrderOfStore = async ( storeId, orderId ) => {
@@ -147,3 +161,19 @@ exports.findAllOrdersOfCustomer = async ( customerId ) => {
   }
 };
 
+
+/*********************************************************************************
+* Mark order ready from store  
+**********************************************************************************/
+exports.markOrderReadyFromStore = async ( orderId, storeId ) => {
+  try {
+
+    await Order.updateOne({ "stores.storeId": storeId }, {"$set": {
+      "stores.$.isItReady": true
+    }});
+
+
+  } catch (err) {
+    throw err;
+  }
+}

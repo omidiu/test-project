@@ -320,6 +320,53 @@ exports.findOrderOfStoreOwner = async ( orderId, storeOwnerId) => {
 };
 
 
+/*********************************************************************************
+* Mark order completed from store 
+**********************************************************************************/
+exports.markOrderReadyFromStore = async ( orderId, storeOwnerId) => {
+  try {
+    
+    const store = await storeService.findByOwner(storeOwnerId);
+    
+    if (!store) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "You don't have any store yet. So there is no order for you :( "
+      });
+    }
+
+    // Get store id of store owner
+    const storeId = store._id;
+
+    // Get order
+    const order = await orderService.findById(orderId);
+    
+    if ( !order ) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "Order not found"
+      });
+    }
+
+    // Get store ids of order
+    const storesOfOrder = order.stores.map(store => { return store.storeId });
+
+    // Check access of store (actually access of store owner by store id of him/her )
+    if ( !storesOfOrder.includes(storeId) ) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "Access denied"
+      });
+    }
+
+    await orderService.markOrderReadyFromStore(orderId, storeId);
+    
+    
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+
 
 /*********************************************************************************
 * Get all products 

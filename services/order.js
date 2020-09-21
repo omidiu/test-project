@@ -15,7 +15,23 @@ exports.create = async ( products, shipping, stores, payment, customerId ) => {
   } catch (err) {
     throw err;
   }
+
 };
+
+
+/*********************************************************************************
+* Find by id 
+**********************************************************************************/
+exports.findById = async (orderId) => {
+  try {
+
+    return await orderRepository.findById(orderId);
+
+  } catch (err) {
+    throw err;
+  }
+}
+
 
 
 /*********************************************************************************
@@ -83,7 +99,19 @@ exports.findAllOrdersOfCustomer = async ( customerId ) => {
 };
 
 
+/*********************************************************************************
+* Mark order ready from store (of course one store)
+**********************************************************************************/
+exports.markOrderReadyFromStore = async ( orderId, storeId ) => {
+  try {
     
+    await orderRepository.markOrderReadyFromStore( orderId, storeId );
+    
+
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 

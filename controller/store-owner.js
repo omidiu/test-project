@@ -166,3 +166,25 @@ exports.getOrder = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
+
+/*********************************************************************************
+* Mark order as complete from store
+**********************************************************************************/
+exports.markOrderReadyFromStore = async (req, res, next) => {
+  try {
+    const storeOwnerId = req.user;
+    const orderId = req.params.orderId;
+    
+    await storeOwnerService.markOrderReadyFromStore(orderId, storeOwnerId);
+    
+    res.status(200).json({
+      message: "Order mark as ready successfully"
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
