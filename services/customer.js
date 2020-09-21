@@ -368,8 +368,8 @@ exports.purchase = async (address, location, estimatedDelivery, deliveryNotes, c
     // Remove duplicate store id
     const storesIds = storesIdsDup.splice(0, storesIdsDup.length, ...(new Set(storesIdsDup)));
 
-    // Create status
-    const status = storesIds.map( store => {
+    // Create stores with status
+    const stores = storesIds.map( store => {
       return {
         storeId: store,
         isItReady: false
@@ -400,12 +400,9 @@ exports.purchase = async (address, location, estimatedDelivery, deliveryNotes, c
       }
     })
     
-    await orderService.create( productsForOrder, shipping, status, payment, customerId );
+    await orderService.create( productsForOrder, shipping, stores, payment, customerId );
     
-
-    
-    return 3;
-    // should make shopping cart empty 
+    // Make shopping cart to empty
     customer.shoppingCart = [];
     await customerRepository.save(customer);
     
