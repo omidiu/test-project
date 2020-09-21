@@ -2,8 +2,6 @@ const { storeOwnerService } = require('../services/index');
 
 
 
-
-
 /*********************************************************************************
 * Create 
 **********************************************************************************/
@@ -127,3 +125,22 @@ exports.getAllProductsOfStore = async (req, res, next) => {
   }
 };
 
+
+/*********************************************************************************
+* Get order of store owner
+**********************************************************************************/
+exports.getOrder = async (req, res, next) => {
+  try {
+    const storeOwnerId = req.user;
+    const orderId = req.params.orderId;
+    
+    const order = await storeOwnerService.findOrderOfStoreOwner(orderId, storeOwnerId);
+    
+    res.status(200).json({
+      order
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

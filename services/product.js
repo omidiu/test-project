@@ -66,10 +66,10 @@ exports.decreaseQuantityOfProduct = async ( minus, productId ) => {
 /*********************************************************************************
 * Get all products of store
 **********************************************************************************/
-exports.GetAllProductOfStore = async ( storeId ) => {
+exports.getAllProductsOfStore = async ( storeId ) => {
   try {
     
-    return await productRepository.GetAllProductOfStore(storeId);
+    return await productRepository.getAllProductsOfStore(storeId);
     
   } catch (err) {
     throw err;

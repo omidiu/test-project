@@ -65,7 +65,7 @@ exports.findByIds = async (productsIds) => {
 
 
 /*********************************************************************************
-* Get all products of store
+* Decrease quantity of product
 **********************************************************************************/
 exports.decreaseQuantityOfProduct = async (minus, productId) => {
   try {
@@ -81,3 +81,25 @@ exports.decreaseQuantityOfProduct = async (minus, productId) => {
   }
 };
 
+
+
+/*********************************************************************************
+* Get all products of store
+**********************************************************************************/
+exports.getAllProductsOfStore = async ( storeId ) => {
+  try {
+
+    const isValidId = mongoose.Types.ObjectId.isValid(storeId);
+    if (!isValidId) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: 'Not valid id'
+      });
+    }
+
+    return await Product.find({storeId});
+    
+
+  } catch (err) {
+    throw err
+  }
+};

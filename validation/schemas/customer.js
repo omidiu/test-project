@@ -53,7 +53,7 @@ const item  = {
   "type": "object",
   "properties": {
     "productId": { "type": "string", "maxLength": 50 },
-    "quantity": { "type": "integer", "minimum": 1 }
+    "quantity": { "type": "integer"  }
   },
   
 

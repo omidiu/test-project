@@ -33,6 +33,9 @@ router.get('/products/:productId', passport.authenticate('storeOwner', {session:
 storeOwnerController.getProductOfStore);
 
 
+// Get order of customer
+router.get('/orders/:orderId', passport.authenticate('storeOwner', {session: false}), 
+storeOwnerController.getOrder);
 
 
 // test

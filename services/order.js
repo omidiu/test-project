@@ -7,10 +7,24 @@ const { orderRepository } = require('../repositories/index');
 /*********************************************************************************
 * Create 
 **********************************************************************************/
-exports.create = async ( products, shipping, status, payment, customerId ) => {
+exports.create = async ( products, shipping, stores, payment, customerId ) => {
   try {
     
-    await orderRepository.create( products, shipping, status, payment, customerId );
+    await orderRepository.create( products, shipping, stores, payment, customerId );
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+/*********************************************************************************
+* Find order of Customer
+**********************************************************************************/
+exports.findById = async ( orderId ) => {
+  try {
+    
+    const order = await orderRepository.findById( orderId );
+    return order;
 
   } catch (err) {
     throw err;
@@ -48,6 +62,8 @@ exports.findAllOrdersOfCustomer = async ( customerId ) => {
   }
 };
 
+
+    
 
 
 

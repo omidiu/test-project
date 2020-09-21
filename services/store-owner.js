@@ -7,7 +7,8 @@ const { storeOwnerRepository } = require('../repositories/index');
 
 // const { storeService } = require('./index');
 const storeService = require('./store');
-const productService = require('./product')
+const productService = require('./product');
+const orderService = require('./order');
 
 /*********************************************************************************
 * Create 
@@ -184,6 +185,7 @@ exports.getProductOfStore = async ( ownerId, productId) => {
     // Find product
     const product = await productService.findById(productId);
 
+    // Check product for store or not (related to store owner too)
     if (product.storeId.toString() !== storeId.toString()){
       return {}
     }
@@ -195,6 +197,49 @@ exports.getProductOfStore = async ( ownerId, productId) => {
 };
 
 
+/*********************************************************************************
+* Find order of store owner 
+**********************************************************************************/
+exports.findOrderOfStoreOwner = async ( orderId, storeOwnerId) => {
+  try {
+    
+    const store = await storeService.findByOwner(storeOwnerId);
+    
+    if (!store) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "You don't have any store yet. So there is no order for you :( "
+      });
+    }
+
+    // Get store id of store owner
+    const storeId = store._id;
+
+
+    
+    // Find order (after $lookup) 
+    const orderArray = await orderService.findById(orderId);
+
+    // products which belongs to store in order
+    const productsOfStore = [];
+    
+    for (let index = 0; index < orderArray.length; index++) {
+      // Check if product belongs to store
+      if ( JSON.stringify (orderArray[index]["productArray"][0].storeId) === JSON.stringify(storeId)) {
+        productsOfStore.push({
+          product: orderArray[index]["productArray"][0], // It can change later
+          quantity: orderArray[index]["products"]["quantity"]
+        });
+      }
+      
+    }
+    
+
+    return productsOfStore;
+    
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 /*********************************************************************************
@@ -212,9 +257,12 @@ exports.getAllProductsOfStore = async ( ownerId ) => {
 
     const storeId = store._id;
 
-    const products = await productService.GetAllProductOfStore(storeId);
+    const products = await productService.getAllProductsOfStore(storeId);
     return products;
   } catch (err) {
     throw err;
   }
 };
+
+
+
