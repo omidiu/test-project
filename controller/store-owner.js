@@ -126,6 +126,28 @@ exports.getAllProductsOfStore = async (req, res, next) => {
 };
 
 
+
+
+/*********************************************************************************
+* Get orders of store owner
+**********************************************************************************/
+exports.getOrders = async (req, res, next) => {
+  try {
+
+    const storeOwnerId = req.user;
+    const orders = await storeOwnerService.findAllOrdersOfStoreOwner(storeOwnerId);
+    
+    res.status(200).json({
+      orders
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+
 /*********************************************************************************
 * Get order of store owner
 **********************************************************************************/

@@ -6,40 +6,59 @@ const { storeOwnerController } = require('../controller/index');
 
 
 // Add customer
-router.post('/signup', storeOwnerValidator.isValidRegisterForm, storeOwnerController.create);
+router.post('/signup', 
+storeOwnerValidator.isValidRegisterForm,
+storeOwnerController.create);
 
 
 // login customer
-router.post('/login', storeOwnerValidator.isValidloginForm, storeOwnerController.login);
+router.post('/login', 
+storeOwnerValidator.isValidloginForm, 
+storeOwnerController.login);
 
 
 // Create store
-router.post('/stores', passport.authenticate('storeOwner', {session: false}), 
-storeOwnerValidator.isValidStoreInformation, storeOwnerController.createStore);
+router.post('/stores', 
+passport.authenticate('storeOwner', {session: false}), 
+storeOwnerValidator.isValidStoreInformation, 
+storeOwnerController.createStore);
 
 
 // Get all product of store
-router.get('/products', passport.authenticate('storeOwner', {session: false}), 
+router.get('/products', 
+passport.authenticate('storeOwner', {session: false}), 
 storeOwnerController.getAllProductsOfStore);
 
 
 // Create product
-router.post('/products', passport.authenticate('storeOwner', {session: false}), 
-storeOwnerValidator.isValidProductInformation, storeOwnerController.addProduct);
+router.post('/products', 
+passport.authenticate('storeOwner', {session: false}), 
+storeOwnerValidator.isValidProductInformation, 
+storeOwnerController.addProduct);
+
 
 
 // Get a product of store
-router.get('/products/:productId', passport.authenticate('storeOwner', {session: false}), 
+router.get('/products/:productId', 
+passport.authenticate('storeOwner', {session: false}), 
 storeOwnerController.getProductOfStore);
 
 
-// Get order of customer
-router.get('/orders/:orderId', passport.authenticate('storeOwner', {session: false}), 
+// Get orders of customer
+router.get('/orders', 
+passport.authenticate('storeOwner', {session: false}), 
+storeOwnerController.getOrders);
+
+
+// Get one order of customer
+router.get('/orders/:orderId', 
+passport.authenticate('storeOwner', {session: false}), 
 storeOwnerController.getOrder);
 
 
 // test
-router.get('/secure', passport.authenticate('storeOwner', {session: false}), (req, res) => {
+router.get('/secure', 
+passport.authenticate('storeOwner', {session: false}), (req, res) => {
   res.send(req.user);
 });
 

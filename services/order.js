@@ -17,19 +17,39 @@ exports.create = async ( products, shipping, stores, payment, customerId ) => {
   }
 };
 
+
 /*********************************************************************************
-* Find order of Customer
+* Find orders of store
 **********************************************************************************/
-exports.findById = async ( orderId ) => {
+exports.findAllOrdersOfStore = async ( storeId ) => {
   try {
     
-    const order = await orderRepository.findById( orderId );
+    const orders = await orderRepository.findAllOrdersOfStore( storeId );
+    return orders;
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+
+/*********************************************************************************
+* Find order of store
+**********************************************************************************/
+exports.findOrderOfStore = async ( storeId, orderId ) => {
+  try {
+    
+    const order = await orderRepository.findOrderOfStore( storeId, orderId );
     return order;
 
   } catch (err) {
     throw err;
   }
 };
+
+
 
 
 /*********************************************************************************

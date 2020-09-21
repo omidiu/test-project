@@ -197,6 +197,66 @@ exports.getProductOfStore = async ( ownerId, productId) => {
 };
 
 
+
+
+/*********************************************************************************
+* Find order of store owner 
+**********************************************************************************/
+exports.findAllOrdersOfStoreOwner = async ( storeOwnerId) => {
+  try {
+    
+    const store = await storeService.findByOwner(storeOwnerId);
+    
+    if (!store) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: "You don't have any store yet. So there is no order for you :( "
+      });
+    }
+
+    // Get store id of store owner
+    const storeId = store._id;
+
+ 
+
+    // Find order (after $lookup) 
+    const ordersArray = await orderService.findAllOrdersOfStore(storeId);
+
+    
+    
+    // products which belongs to store in order
+    const ordersOfStore = [];
+    
+    for (let i = 0; i < ordersArray.length; i++) {
+     
+      // New order record
+      ordersOfStore.push({
+        orderId: ordersArray[i]._id, 
+        products: []
+      })
+
+      // Push products which belongs to store
+      for (let j = 0; j < ordersArray[i]["products"].length; j++) {
+        if ( JSON.stringify (ordersArray[i]["products"][j].storeId[0]) === JSON.stringify(storeId)) {
+          ordersOfStore[i].products.push( ordersArray[i]["products"][j].product )
+        }
+      }
+      
+      
+      
+    }
+    
+
+    
+    return ordersOfStore;
+    
+    
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
 /*********************************************************************************
 * Find order of store owner 
 **********************************************************************************/
@@ -217,9 +277,17 @@ exports.findOrderOfStoreOwner = async ( orderId, storeOwnerId) => {
 
     
     // Find order (after $lookup) 
-    const orderArray = await orderService.findById(orderId);
+    const orderArray = await orderService.findOrderOfStore(storeId, orderId);
+    
 
     // products which belongs to store in order
+    const orderOfStore = {
+      orderId
+    }
+
+
+    
+
     const productsOfStore = [];
     
     for (let index = 0; index < orderArray.length; index++) {
@@ -233,13 +301,24 @@ exports.findOrderOfStoreOwner = async ( orderId, storeOwnerId) => {
       
     }
     
+    
 
-    return productsOfStore;
+    orderOfStore.products = productsOfStore
+
+    // Check empty (if empty means it's not for this store) 
+    if (productsOfStore.length === 0) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: 'Access denied'
+      });
+    }
+
+    return orderOfStore;
     
   } catch (err) {
     throw err;
   }
 };
+
 
 
 /*********************************************************************************
