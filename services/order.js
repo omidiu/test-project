@@ -143,4 +143,17 @@ exports.markOrderReadyFromStore = async ( orderId, storeId ) => {
 };
 
 
+/*********************************************************************************
+* Accept order by driver
+**********************************************************************************/
+exports.acceptByDriver = async ( orderId, driverId ) => {
+  try {
+    
+    await orderRepository.acceptByDriver( orderId, driverId );
+    
+
+  } catch (err) {
+    throw err;
+  }
+};
 

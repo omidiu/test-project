@@ -27,6 +27,12 @@ driverController.getOneUnAssignOrder);
 
 
 
+// Accept unassign order
+router.put('/orders/new-orders/:orderId/accept', 
+passport.authenticate('driver', {session: false}), 
+driverController.acceptOrder);
+
+
 
 
 module.exports = router;

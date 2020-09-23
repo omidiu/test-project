@@ -169,3 +169,53 @@ exports.findOneUnAssignAndCompletedOrder = async (orderId) => {
 }
 
 
+
+/*********************************************************************************
+* Accept order from driver
+**********************************************************************************/
+exports.acceptOrder = async (orderId, driverId) => {
+  try {
+
+    // Get order (order array since aggregation)
+    const orderArray = await orderService.findOrderForDriver(orderId);
+    
+    // Single result ( but in aggregation )
+    const order = orderArray[0];
+    
+
+    if (!order) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not found"
+      });
+    }
+
+    await orderService.acceptByDriver(orderId, driverId);
+
+
+    
+    // driver: {
+    //   driverId: {
+        
+    //   },
+    //   acceptedDate: {
+        
+    //   },
+    //   status: {
+        
+    //   }
+    
+
+    // Stores status was checked in aggregation
+
+    // Not assigned to any driver was checked in aggregation
+    
+
+
+    return order;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+

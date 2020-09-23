@@ -372,3 +372,23 @@ exports.markOrderReadyFromStore = async ( orderId, storeId ) => {
     throw err;
   }
 }
+
+
+/*********************************************************************************
+* Accept order by driver
+**********************************************************************************/
+exports.acceptByDriver = async ( orderId, driverId ) => {
+  try {
+
+    await Order.updateOne({ _id: orderId }, {"$set": {
+      "driver.driverId": driverId,
+      "driver.acceptedDate": Date.now(),
+      "driver.status": "accepted"
+    }});
+
+
+  } catch (err) {
+    throw err;
+  }
+}
+

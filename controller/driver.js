@@ -78,3 +78,24 @@ exports.getOneUnAssignOrder = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
+/*********************************************************************************
+* Get unassign order and of course completed 
+**********************************************************************************/
+exports.acceptOrder = async (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+    const driverId = req.user;
+    const order = await driverService.acceptOrder(orderId, driverId);
+    
+    res.status(200).json({
+      order
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
