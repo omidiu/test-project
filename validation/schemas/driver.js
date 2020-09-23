@@ -12,7 +12,7 @@ const registration = {
   },
   
 
-  "required": ["name", "phoneNumber", "password"]
+  "required": ["name", "phoneNumber", "username", "password"]
 }
 
 

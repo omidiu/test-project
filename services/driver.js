@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const MyError = require('../utils/error');
 const { driverRepository } = require('../repositories/index');
+const { objectUtil } = require('../utils/index')
+
+const orderService = require('./order');
 
 /*********************************************************************************
 * Create 
@@ -113,4 +116,56 @@ exports.verify = async (driverId) => {
     throw err;
   }
 }
+
+
+
+/*********************************************************************************
+* Find all unassign and completed orders
+**********************************************************************************/
+exports.findAllUnAssignAndCompletedOrdersForDriver = async () => {
+  try {
+
+    // Get orders
+    const orders = await orderService.findAllUnAssignAndCompletedOrdersForDriver();
+
+    
+
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+
+/*********************************************************************************
+* Find unassign and completed order by id
+**********************************************************************************/
+exports.findOneUnAssignAndCompletedOrder = async (orderId) => {
+  try {
+
+    // Get order (order array since aggregation)
+    const orderArray = await orderService.findOrderForDriver(orderId);
+    
+    const order = orderArray[0];
+    
+
+    if (!order) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not found"
+      });
+    }
+
+    // Stores status was checked in aggregation
+
+    // Not assigned to any driver was checked in aggregation
+    
+
+
+    return order;
+  } catch (err) {
+    throw err;
+  }
+}
+
 

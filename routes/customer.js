@@ -14,7 +14,9 @@ router.post('/login', customerValidator.isValidloginForm, customerController.log
 
 
 // Get profile
-router.get('/profile', passport.authenticate('customer', {session: false}), customerController.getProfile)
+router.get('/profile', 
+passport.authenticate('customer', {session: false}), 
+customerController.getProfile)
 
 
 // Edit profile

@@ -26,6 +26,9 @@ passport.use('customer', new JwtStrategy(options, async (payload, done) => {
 
 passport.use('driver', new JwtStrategy(options, async (payload, done) => {
     try {
+        if (payload.role !== "driver" ){
+            return done(null, false); 
+        }
         const driver = await driverService.findById(payload._id);
         done(null, driver.id);
     } catch (err) {

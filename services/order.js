@@ -35,6 +35,35 @@ exports.findById = async (orderId) => {
 
 
 /*********************************************************************************
+* Find all unassign and completed orders 
+**********************************************************************************/
+exports.findAllUnAssignAndCompletedOrdersForDriver = async () => {
+  try {
+
+    return orderRepository.findAllUnAssignAndCompletedOrdersForDriver();
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+
+/*********************************************************************************
+* Find by id 
+**********************************************************************************/
+exports.findOrderForDriver = async (orderId) => {
+  try {
+
+    return orderRepository.findOrderForDriver(orderId);
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+/*********************************************************************************
 * Find orders of store
 **********************************************************************************/
 exports.findAllOrdersOfStore = async ( storeId ) => {

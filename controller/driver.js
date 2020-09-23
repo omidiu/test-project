@@ -40,3 +40,41 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
+/*********************************************************************************
+* Get all unassign orders (and of course completed )
+**********************************************************************************/
+exports.getAllUnAssignOrders = async (req, res, next) => {
+  try {
+    
+    const orders = await driverService.findAllUnAssignAndCompletedOrdersForDriver();
+    
+    res.status(200).json({
+      orders
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+
+/*********************************************************************************
+* Get unassign order and of course completed 
+**********************************************************************************/
+exports.getOneUnAssignOrder = async (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+    const order = await driverService.findOneUnAssignAndCompletedOrder(orderId);
+    
+    res.status(200).json({
+      order
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
