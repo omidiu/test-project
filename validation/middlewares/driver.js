@@ -46,6 +46,7 @@ exports.isValidRegisterForm = (req, res, next) => {
     
 }
 
+
 /*********************************************************************************
 * Validate login form
 **********************************************************************************/
@@ -55,6 +56,32 @@ exports.isValidloginForm = (req, res, next) => {
 
     // Check valid or not
     const {valid, validator} = validateSchema(req.body, driverSchemas.login);
+
+    if (!valid) {
+      throw new MyError(400, "Bad request", new Error().stack, {
+        error: validator.errors
+      });
+    }
+
+    // validation form is valid
+    next();
+
+  } catch (err) {
+    next(err);
+  } 
+    
+}
+
+
+/*********************************************************************************
+* Validate edit status
+**********************************************************************************/
+exports.isValidStatus = (req, res, next) => {
+  
+  try {
+
+    // Check valid or not
+    const {valid, validator} = validateSchema(req.body, driverSchemas.editStatus);
 
     if (!valid) {
       throw new MyError(400, "Bad request", new Error().stack, {

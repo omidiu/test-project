@@ -33,13 +33,25 @@ const login = {
 
 
 
+const editStatus = {
+  "title": "Status",
+  "description": "Status validation (It's an enum)",
+  "type": "object",
+  "properties": {
+    "status": { "enum": ['onWay', 'done', 'reject'] }
+  },
+  
+
+  "required": ["status"]
+}
 
 
 
 
 module.exports = {
   registration,
-  login
+  login,
+  editStatus
 }
 
 

@@ -265,3 +265,31 @@ exports.allOrdersOfDriver = async (driverId) => {
 }
 
 
+
+/*********************************************************************************
+* Change status of order
+**********************************************************************************/
+exports.changeStatusOfOrder = async (orderId, status, driverId) => {
+  try {
+
+
+    // Get order (order array since aggregation)
+    const order = await orderService.findById(orderId);
+
+    if ( !order || JSON.stringify( order.driver.driverId) !== JSON.stringify(driverId) ) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not found"
+      });
+    }
+    
+    await orderService.changeStatusOfOrder(status, orderId);
+    
+    
+    
+    
+  } catch (err) {
+    throw err;
+  }
+}
+
+

@@ -4,6 +4,7 @@ const { Order } = require('../models/index');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
+
 /*********************************************************************************
 * Create 
 **********************************************************************************/
@@ -40,7 +41,7 @@ exports.findById = async (orderId) => {
 
 
 /*********************************************************************************
-* Find order with structure for driver 
+* Find order with structure for driver (new)
 **********************************************************************************/
 exports.findOrderForDriver = (orderId) => {
   try {
@@ -136,6 +137,107 @@ exports.findOrderForDriver = (orderId) => {
     throw err;
   }
 }
+
+
+/*********************************************************************************
+* Find order of driver (owned)
+**********************************************************************************/
+exports.findOrderOfDriver = (orderId, driverId) => {
+  try {
+
+    const isValidId = mongoose.Types.ObjectId.isValid(orderId);
+    if (!isValidId)
+      throw new MyError(400, "Bad request", new Error().stack, {
+        message: 'Not valid id'
+      });
+    return Order.aggregate([
+      {
+        $match: {
+          _id: ObjectId(orderId),
+          "driver.driverId": ObjectId(driverId)
+        },
+        
+      },
+      {
+        $unwind: {
+          path: "$stores"
+        }
+      }, 
+      {
+        $group: {
+          _id: "$_id",
+          stores: { $addToSet: '$stores' },
+          customerId: {$first: "$customerId" },
+          all_stores: { $sum: 1 },
+          all_stores_that_ready: { $sum: { $cond: [ { $eq: [ '$stores.isItReady', true ] }, 1, 0 ] } },
+        }
+      }, 
+      {
+        $project: {
+          _id: 1,
+          stores: 1,
+          customerId: 1,
+          arrays_equal: { $cond: [ { $eq: [ '$all_stores', '$all_stores_that_ready' ] }, 1, 0 ] }
+        }
+      }, 
+      {
+        $match: {
+          'arrays_equal' : 1
+        }
+      },
+      {
+        $lookup: {
+          from: 'customers',
+          localField: 'customerId',
+          foreignField: '_id',
+          as: 'customer'
+        }
+      }, 
+      {
+        $lookup: {
+          from: 'stores',
+          localField: 'stores.storeId',
+          foreignField: '_id',
+          as: 'stores'
+        }
+      },
+      {
+        $project: {
+          customerInformation: {
+            $arrayElemAt: [ '$customer', 0 ],
+
+          },
+          "shipping": 1,
+          "stores": 1,
+          "_id": 1
+          
+        }
+      }, 
+      {
+        $project: {
+          customerInformation: {
+            name: 1,
+            phoneNumber: 1
+          },
+          shipping: 1,
+          stores: {
+            name: 1,
+            address: 1,
+            lat: 1,
+            long: 1
+          }
+        }
+      }
+      
+    ]);
+    
+
+  } catch(err) {
+    throw err;
+  }
+}
+
+
 
 
 /*********************************************************************************
@@ -271,6 +373,7 @@ exports.findOrderOfStore = async ( storeId, orderId ) => {
 };
 
 
+
 /*********************************************************************************
 * Find orders by for store 
 **********************************************************************************/
@@ -337,7 +440,6 @@ exports.findOrderOfCustomer = async ( orderId, customerId ) => {
     throw err
   }
 };
-
 
 
 
@@ -470,6 +572,7 @@ exports.markOrderReadyFromStore = async ( orderId, storeId ) => {
 }
 
 
+
 /*********************************************************************************
 * Accept order by driver
 **********************************************************************************/
@@ -487,4 +590,23 @@ exports.acceptByDriver = async ( orderId, driverId ) => {
     throw err;
   }
 }
+
+
+
+/*********************************************************************************
+* Change status of order
+**********************************************************************************/
+exports.changeStatusOfOrder = async ( status, orderId ) => {
+  try {
+
+    await Order.updateOne({ _id: orderId }, {"$set": {
+      "driver.status": status
+    }});
+
+
+  } catch (err) {
+    throw err;
+  }
+}
+
 

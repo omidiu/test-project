@@ -116,3 +116,23 @@ exports.allOrdersOfDriver = async (req, res, next) => {
     next(err);
   }
 };
+
+
+/*********************************************************************************
+* Change status of order
+**********************************************************************************/
+exports.changeStatusOfOrder = async (req, res, next) => {
+  try {
+    const driverId = req.user;
+    const orderId = req.params.orderId;
+    const status = req.body.status;
+    await driverService.changeStatusOfOrder(orderId, status, driverId);
+    
+    res.status(200).json({
+      message: `Order status changed successfully to ${status}`
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

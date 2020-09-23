@@ -40,6 +40,13 @@ passport.authenticate('driver', {session: false}),
 driverController.allOrdersOfDriver);
 
 
+// Change order status
+router.put('/orders/:orderId/status', 
+passport.authenticate('driver', {session: false}), 
+driverValidator.isValidStatus,
+driverController.changeStatusOfOrder);
+
+
 
 
 module.exports = router;

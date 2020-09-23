@@ -50,7 +50,7 @@ exports.findAllUnAssignAndCompletedOrdersForDriver = async () => {
 
 
 /*********************************************************************************
-* Find by id 
+* Find order of driver  (new)
 **********************************************************************************/
 exports.findOrderForDriver = async (orderId) => {
   try {
@@ -61,6 +61,21 @@ exports.findOrderForDriver = async (orderId) => {
     throw err;
   }
 }
+
+
+/*********************************************************************************
+* Find order of driver  (owned)
+**********************************************************************************/
+exports.findOrderOfDriver = async (orderId, driverId) => {
+  try {
+
+    return orderRepository.findOrderOfDriver(orderId, driverId);
+
+  } catch (err) {
+    throw err;
+  }
+}
+
 
 
 /*********************************************************************************
@@ -166,6 +181,21 @@ exports.acceptByDriver = async ( orderId, driverId ) => {
   try {
     
     await orderRepository.acceptByDriver( orderId, driverId );
+    
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+/*********************************************************************************
+* Change status of order
+**********************************************************************************/
+exports.changeStatusOfOrder = async (status, orderId) => {
+  try {
+    
+    await orderRepository.changeStatusOfOrder( status, orderId );
     
 
   } catch (err) {
