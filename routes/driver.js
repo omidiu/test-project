@@ -34,5 +34,12 @@ driverController.acceptOrder);
 
 
 
+// Get all orders of driver
+router.get('/orders/my-orders', 
+passport.authenticate('driver', {session: false}), 
+driverController.allOrdersOfDriver);
+
+
+
 
 module.exports = router;

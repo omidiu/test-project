@@ -99,3 +99,20 @@ exports.acceptOrder = async (req, res, next) => {
   }
 };
 
+
+/*********************************************************************************
+* All orders of driver 
+**********************************************************************************/
+exports.allOrdersOfDriver = async (req, res, next) => {
+  try {
+    const driverId = req.user;
+    const order = await driverService.allOrdersOfDriver(driverId);
+    
+    res.status(200).json({
+      order
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

@@ -129,6 +129,22 @@ exports.findAllOrdersOfCustomer = async ( customerId ) => {
 
 
 /*********************************************************************************
+* Find all orders of driver
+**********************************************************************************/
+exports.findAllOrdersOfDriver = async ( driverid ) => {
+  try {
+    
+    const orders = await orderRepository.findAllOrdersOfDriver( driverid );
+    return orders;
+
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+
+/*********************************************************************************
 * Mark order ready from store (of course one store)
 **********************************************************************************/
 exports.markOrderReadyFromStore = async ( orderId, storeId ) => {

@@ -218,4 +218,50 @@ exports.acceptOrder = async (orderId, driverId) => {
 }
 
 
+/*********************************************************************************
+* Find all orders of driver
+**********************************************************************************/
+exports.allOrdersOfDriver = async (driverId) => {
+  try {
+
+    // Get order (order array since aggregation)
+    const ordersArray = await orderService.findAllOrdersOfDriver(driverId);
+    
+    return ordersArray;
+    
+
+    if (!order) {
+      throw new MyError(404, "Bad request", new Error().stack, {
+        message: "Not found"
+      });
+    }
+
+    await orderService.acceptByDriver(orderId, driverId);
+
+
+    
+    // driver: {
+    //   driverId: {
+        
+    //   },
+    //   acceptedDate: {
+        
+    //   },
+    //   status: {
+        
+    //   }
+    
+
+    // Stores status was checked in aggregation
+
+    // Not assigned to any driver was checked in aggregation
+    
+
+
+    return order;
+  } catch (err) {
+    throw err;
+  }
+}
+
 
